@@ -1,0 +1,12 @@
+.productsWrapper{
+    margin:50px;
+    padding:0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
+    list-style-type: none;
+}
+.productWrapper {
+    border: 1px solid gray;
+    border-radius: 20px;
+}
