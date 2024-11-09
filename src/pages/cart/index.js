@@ -1,23 +1,30 @@
 import React, {useState, useEffect} from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getCart, setShippingAddress } from '../../rest/cart'
 import { placeOrder } from '../../rest/order'
 import { OrderSuccessfulPopUp } from '../../components/orderSuccessfulPopUp'
 import styles from './Cart.module.css'
 
 export const Cart = () => {
+    const navigate = useNavigate()
     const {cartId}=useParams()
     const [cart, setCart] = useState(null)
     const [order, setOrder] = useState(null)
 
     const handlePlaceOrder = async() => {
         try {
+          localStorage.removeItem('cartId')
           const responseCart = await setShippingAddress(cart?.id, cart?.version)
           const placeOrderRes = await placeOrder(responseCart?.id, responseCart?.version)
           setOrder(placeOrderRes)
         } catch(error){
             console.log(error)
         }
+    }
+
+    const handleAddMoreProducts = () => {
+           localStorage.setItem('cartId', cart?.id)
+           navigate('/')
     }
 
     useEffect(()=>{
@@ -44,9 +51,14 @@ export const Cart = () => {
 
                 )
             }
-            <button className={styles.button} onClick={handlePlaceOrder}>Place Order</button>
+            <button className={styles.abort} onClick={()=>{localStorage.removeItem('cartId'); navigate('/')}}>Abort</button>
+            <div className={styles.button}>
+                <button className={styles.button1} onClick={handleAddMoreProducts}>Add more product</button>
+                <button className={styles.button2} onClick={handlePlaceOrder}>Place Order</button>
+            </div>
     
-            {order && <div className={styles?.popUpWrapper}><OrderSuccessfulPopUp order={order}/></div>}
+            {order && <div className={styles?.popUpContainer}>
+                <OrderSuccessfulPopUp order={order}/></div>}
         </div>
      )
 }

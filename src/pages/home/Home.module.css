@@ -23,3 +23,38 @@
     font-size: 20px;
     color: gray;
 }
+
+.quantityWrapper{
+    display: flex;
+    width: 100%;
+    border: none;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+.quantityWrapper1 {
+    visibility: hidden;
+}
+.quantityWrapper button {
+    width: 50px;
+}
+.quantityWrapper input {
+    width: 50px;
+    text-align: center;
+}
+.buttonWrapper{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.btn1 {
+    font-size: 16px;
+    padding: 12px;
+    background-color: lightblue;
+    border: none;
+}
+.btn2{
+    font-size: 16px;
+    background-color: green;
+    padding: 12px;
+    border: none;
+}
