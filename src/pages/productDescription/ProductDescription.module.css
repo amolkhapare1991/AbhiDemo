@@ -1,0 +1,18 @@
+.productWrapper {
+    margin: 50px;
+}
+.title {
+    font-size: 28px;
+}
+.button{
+    position: fixed;
+    bottom: 70px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    width: 50%;
+    font-size: 24px;
+    left: 50%;
+    transform: translate(-50%, 0) ;
+    padding: 20px;
+    background: gray;
+}

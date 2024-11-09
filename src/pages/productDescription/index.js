@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductById } from '../../rest/product';
 import { addToCart, createCart } from '../../rest/cart';
+import styles from './ProductDescription.module.css'
 
 export const ProductDescription = () => {
     const { productId } = useParams();
@@ -9,7 +10,6 @@ export const ProductDescription = () => {
     const navigate = useNavigate();
 
     const handleCart = async () => {
-        console.log("add to cart")
         try {
             const cart = await createCart();  
             const addLineItem = await addToCart(cart?.id, cart?.version, productId);   
@@ -26,11 +26,12 @@ export const ProductDescription = () => {
         }
         getProduct(productId);
     }, []); 
-
+   
     return (
-        <div>
+        <div className={styles.productWrapper}>
             <img src={product?.pdpImage?.link?.[0]} alt={product?.productName} width={500} height={500} />
-            <button onClick={handleCart}>Add to cart</button>
+            <h4 className={styles.title}>{product?.productName}</h4>
+            <button className={styles.button} onClick={handleCart}>Add to cart</button>
         </div>
     );
 };

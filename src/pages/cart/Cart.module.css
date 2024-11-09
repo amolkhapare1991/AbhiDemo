@@ -1,0 +1,52 @@
+.cartWrapper {
+    margin:50px;
+    position: relative;
+}
+
+.cartWrapper h5{
+    font-size: 32px;
+}
+.popUpWrapper {
+    position: absolute;
+    width: 100%;
+    height:100vh;
+    top:0;
+    left:0;
+    background-color: lightgray;
+    opacity: 0.5;
+}
+
+.itemWrapper {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    gap: 100px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    align-items: center;
+}
+.itemWrapper img {
+    margin:20px;
+    width: 100%;
+    height: auto;
+}
+.itemWrapper div{
+    text-align: left;
+}
+.title{
+    font-size: 24px;
+}
+.title span{
+    font-weight: bold;
+}
+.button{
+    position: fixed;
+    bottom: 70px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    width: 50%;
+    font-size: 24px;
+    left: 50%;
+    transform: translate(-50%, 0) ;
+    padding: 20px;
+    background: gray;
+}

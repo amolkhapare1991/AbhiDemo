@@ -23,9 +23,9 @@ export const Home = () => {
          {
             productList?.map((item)=>
                <li className={styles.productWrapper} onClick={()=>{handleProduct(item?.productId)}}>
-                  <img src={item?.pdpImage?.link} alt={item?.productName} width={50} height={50}></img>
-                  <h5>{item?.productName}</h5>
-                  <p>INR-{item?.price}</p>
+                  <img className={styles.imgWrapper} src={item?.pdpImage?.link?.[0]} alt={item?.productName} width={50} height={50}></img>
+                  <h5 className={styles.title}>{item?.productName}</h5>
+                  <p className={styles.price}>INR-{item?.price}</p>
                </li>
             )
          }
