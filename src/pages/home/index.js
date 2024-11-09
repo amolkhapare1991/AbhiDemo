@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { getProducts } from "../../rest/product"
 import styles from './Home.module.css'
 import { useNavigate } from 'react-router-dom'
-import { addToCart, createCart, getCart, removeLineItem } from '../../rest/cart'
+import { addToCart, createCart, getCart, removeLineItem, updateLineItem } from '../../rest/cart'
 export const Home = () => {
    const [productList, setProductList] = useState([])
    const [cart, setCart] = useState(null)
@@ -33,6 +33,12 @@ export const Home = () => {
       return cart?.lineItems?.find(item=>item?.productId===productId)
    }
 
+   const manageQuantity = async(productId, action) => {
+      const lineItem = cart?.lineItems?.find(item=>item?.productId===productId)
+      const res = await updateLineItem(cart?.id, cart?.version, lineItem?.id, action==='add' ? lineItem?.quantity + 1 : lineItem?.quantity - 1 )
+      setCart(res)
+   }
+   
    const handleQuantity = (productId) => {
       const product = isProductInCart(productId)
       return product ? product?.quantity : 0 
@@ -60,10 +66,10 @@ export const Home = () => {
                   <img onClick={()=>{handleProduct(item?.productId)}} className={styles.imgWrapper} src={item?.pdpImage?.link?.[0]} alt={item?.productName} width={50} height={50}></img>
                   <h5 className={styles.title}>{item?.productName}</h5>
                   <p className={styles.price}>INR-{item?.price}</p>
-                  <div className={`${styles.quantityWrapper}${handleQuantity(item?.productId) ?'':styles.quantityWrapper1}`}>
-                     <button>-</button>
+                  <div className={`${styles.quantityWrapper} ${handleQuantity(item?.productId) ?'':styles.quantityWrapper1}`}>
+                     <button onClick={()=>manageQuantity(item?.productId, 'minus')}>-</button>
                      <input type='text' value={handleQuantity(item?.productId)}/>
-                     <button>+</button>
+                     <button onClick={()=>manageQuantity(item?.productId, 'add')}>+</button>
                   </div>
                   <div className={styles.buttonWrapper}>
                      <button className={styles.btn1}>Try me</button>
