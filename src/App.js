@@ -1,20 +1,25 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import './App.css';
-import { Home } from './pages/home';
-import { ProductDescription } from './pages/productDescription';
-import { Cart } from './pages/cart';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Menu from './components/Menu';
+import Product from './components/Product'; // Import the Product component
+import Cart from './components/Cart';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="pdp/:productId" element={<ProductDescription/>}/>
-          <Route path="cart/:cartId" element={<Cart/>}/>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Router>
+      <div className="app-container">
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="cart/:cartId" element={<Cart />} />
+            <Route path="pdp/:productId" element={<Product />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+
+      </div>
+    </Router>
   );
 }
 

@@ -2,7 +2,7 @@ import { token } from "./product"
 export async function addToCart (
     cartId,
     cartVersion,
-    productId
+    sku
   ) {
     try {
       const cartRawResponse = await fetch(
@@ -17,7 +17,7 @@ export async function addToCart (
             actions: [
               {
                 action: 'addLineItem',
-                productId,
+                sku,
                 variantId: 1,
                 quantity: 1
               }
@@ -125,96 +125,7 @@ export async function addToCart (
         }
       )
       const cartData = await cartRawResponse.json()
-      const cartResponse = {
-        errorMessage: cartData?.message,
-        id: cartData?.id,
-        version: cartData?.version,
-        customerGroupId: cartData?.customerGroup?.id,
-        leaseMonth: cartData?.custom?.fields?.leaseMonth,
-        lineItems: cartData?.lineItems?.map((lineItem) => {
-          return {
-            id: lineItem?.id,
-            productId: lineItem?.productId,
-            productKey: lineItem?.productKey,
-            name: lineItem?.name['en-US'],
-            custom: {
-              type: {
-                typeId: lineItem?.custom?.type?.typeId,
-                id: lineItem?.custom?.type?.id
-              },
-              fields: {
-                addToRoom: lineItem?.custom?.fields?.addToRoom
-              }
-            },
-            variant: {
-              sku: lineItem?.variant?.sku,
-              prices: lineItem?.variant?.prices?.map((priceData) => {
-                return {
-                  id: priceData?.id,
-                  value: {
-                    centAmount: priceData?.value?.centAmount
-                  },
-                  customerGroup: {
-                    id: priceData?.customerGroup?.id
-                  }
-                }
-              }),
-              images: lineItem?.variant?.images?.map((imageData) => {
-                return {
-                  url: imageData?.url,
-                  label: imageData?.label
-                }
-              }),
-              attributes: lineItem?.variant?.attributes?.map(
-                (attributeData) => {
-                  return {
-                    name: attributeData?.name,
-                    value: attributeData?.value
-                  }
-                }
-              )
-            },
-            price: {
-              value: {
-                centAmount: lineItem?.price?.value?.centAmount
-              }
-            },
-            quantity: lineItem?.quantity,
-            totalPrice: {
-              centAmount: lineItem?.totalPrice?.centAmount
-            }
-          }
-        }),
-        discountCodes: cartData?.discountCodes?.map((disCode) => {
-          return disCode?.discountCode?.id
-        }),
-        totalPrice: {
-          centAmount: cartData?.totalPrice?.centAmount
-        },
-        totalLineItemQuantity: cartData?.totalLineItemQuantity,
-        shippingAddress: {
-          firstName: cartData?.shippingAddress?.firstName,
-          lastName: cartData?.shippingAddress?.lastName,
-          streetName: cartData?.shippingAddress?.streetName,
-          additionalStreetInfo: cartData?.shippingAddress?.additionalStreetInfo,
-          city: cartData?.shippingAddress?.city,
-          state: cartData?.shippingAddress?.state,
-          country: cartData?.shippingAddress?.country,
-          postalCode: cartData?.shippingAddress?.postalCode,
-          email: cartData?.shippingAddress?.email,
-          key: cartData?.shippingAddress?.key
-        },
-        shippingMethodInfo: {
-          shippingMethodName: cartData?.shippingInfo?.shippingMethodName,
-          price: {
-            currencyCode: cartData?.shippingInfo?.price?.currencyCode,
-            centAmount: cartData?.shippingInfo?.price?.centAmount
-          },
-          shippingMethodId: cartData?.shippingInfo?.shippingMethod?.id
-        },
-        tax: cartData?.taxedPrice?.totalTax?.centAmount
-      }
-      return cartResponse
+      return cartData
     } catch (e) {
       return { errorMessage: 'Unable to fetch data from server.' }
     }
@@ -231,94 +142,7 @@ export async function addToCart (
         }
       )
       const cartData = await cartRawResponse.json()
-      const cartResponse = {
-        errorMessage: cartData?.message,
-        id: cartData?.id,
-        version: cartData?.version,
-        lineItems: cartData?.lineItems?.map((lineItem) => {
-          return {
-            id: lineItem?.id,
-            productId: lineItem?.productId,
-            productKey: lineItem?.productKey,
-            name: lineItem?.name['en-IN'],
-            custom: {
-              type: {
-                typeId: lineItem?.custom?.type?.typeId,
-                id: lineItem?.custom?.type?.id
-              },
-              fields: {
-                addToRoom: lineItem?.custom?.fields?.addToRoom
-              }
-            },
-            variant: {
-              sku: lineItem?.variant?.sku,
-              prices: lineItem?.variant?.prices?.map((priceData) => {
-                return {
-                  id: priceData?.id,
-                  value: {
-                    centAmount: priceData?.value?.centAmount
-                  },
-                  customerGroup: {
-                    id: priceData?.customerGroup?.id
-                  }
-                }
-              }),
-              images: lineItem?.variant?.images?.map((imageData) => {
-                return {
-                  url: imageData?.url,
-                  label: imageData?.label
-                }
-              }),
-              attributes: lineItem?.variant?.attributes?.map(
-                (attributeData) => {
-                  return {
-                    name: attributeData?.name,
-                    value: attributeData?.value
-                  }
-                }
-              )
-            },
-            price: {
-              value: {
-                centAmount: lineItem?.price?.value?.centAmount
-              }
-            },
-            quantity: lineItem?.quantity,
-            totalPrice: {
-              centAmount: lineItem?.totalPrice?.centAmount
-            }
-          }
-        }),
-        discountCodes: cartData?.discountCodes?.map((disCode) => {
-          return disCode?.discountCode?.id
-        }),
-        totalPrice: {
-          centAmount: cartData?.totalPrice?.centAmount
-        },
-        totalLineItemQuantity: cartData?.totalLineItemQuantity,
-        shippingAddress: {
-          firstName: cartData?.shippingAddress?.firstName,
-          lastName: cartData?.shippingAddress?.lastName,
-          streetName: cartData?.shippingAddress?.streetName,
-          additionalStreetInfo: cartData?.shippingAddress?.additionalStreetInfo,
-          city: cartData?.shippingAddress?.city,
-          state: cartData?.shippingAddress?.state,
-          country: cartData?.shippingAddress?.country,
-          postalCode: cartData?.shippingAddress?.postalCode,
-          email: cartData?.shippingAddress?.email,
-          key: cartData?.shippingAddress?.key
-        },
-        shippingMethodInfo: {
-          shippingMethodName: cartData?.shippingInfo?.shippingMethodName,
-          price: {
-            currencyCode: cartData?.shippingInfo?.price?.currencyCode,
-            centAmount: cartData?.shippingInfo?.price?.centAmount
-          },
-          shippingMethodId: cartData?.shippingInfo?.shippingMethod?.id
-        },
-        tax: cartData?.taxedPrice?.totalTax?.centAmount
-      }
-      return cartResponse
+      return cartData
     } catch (e) {
       return { errorMessage: 'Unable to fetch data from server.' }
     }
@@ -343,15 +167,15 @@ export async function addToCart (
                 action: 'setShippingAddress',
                 address: {
                   key: 'exampleKey',
-                  firstName: 'FName',
-                  lastName: 'LName',
-                  streetName:'street 1',
+                  firstName: 'FNasme',
+                  lastName: 'LNamdse',
+                  streetName:'strsdeet 1',
                   postalCode: '560054',
-                  city: 'Exemplary City',
-                  state: 'Exemplary State',
+                  city: 'Exemplardsy City',
+                  state: 'Exemplasdry State',
                   country: 'IN',
-                  email: 'email@example.com',
-                  mobile : "+91 171 2345678",
+                  email: 'email@edsxample.com',
+                  mobile : "+91 17ds1 2345678",
                 }
               }
             ]

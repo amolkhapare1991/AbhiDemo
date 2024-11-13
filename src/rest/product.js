@@ -1,4 +1,4 @@
-export const token = `Bearer ia5wzZ12QX3B-q5WMqIs_RsV3wqxurUC`
+export const token = `Bearer qemPRAtK_arlFOZIBC0F4kQF36eAGGmo`
 export async function getProducts () {
     try {
       const productRawResponse = await fetch(
@@ -36,6 +36,22 @@ export async function getProducts () {
       return { errorMessage: 'Unable to fetch data from server.' }
     }
   }
+export async function getCategories () {
+    try {
+      const productRawResponse = await fetch(
+        `https://api.us-central1.gcp.commercetools.com/abhijeet/categories`,
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      )
+      const productData = await productRawResponse.json()
+      return productData?.results;
+    } catch (e) {
+      return { errorMessage: 'Unable to fetch data from server.' }
+    }
+  }
 
   export async function getProductById (productId) {
     try {
@@ -63,10 +79,46 @@ export async function getProducts () {
             (image) => image?.url
           )
         },
-        attributes: productData?.masterData?.current?.masterVariant?.attributes
+        attributes: productData?.masterData?.current?.masterVariant?.attributes,
+        price: productData?.masterData?.current?.masterVariant?.prices?.[0]?.value?.centAmount,
+        category: productData?.masterData.current.categories[0].id
       }
       return product
     } catch (e) {
       return { errorMessage: 'Unable to fetch data from server.' }
+    }
+  }
+  export async function fetchProductsByCategory(categoryID) {
+    try {  
+      const productRawResponse = await fetch(
+        `https://api.us-central1.gcp.commercetools.com/abhijeet/product-projections?where=categories(id="${categoryID}")`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+  
+      const productData = await productRawResponse.json();
+      return productData?.results;
+    } catch (e) {
+      return { errorMessage: 'Unable to fetch data from server.' };
+    }
+  }
+  export async function fetchCategoryName(categoryID) {
+    try {  
+      const productRawResponse = await fetch(
+        `https://api.us-central1.gcp.commercetools.com/abhijeet/product-projections?where=categories(id="${categoryID}")&expand=categories[*]`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+  
+      const productData = await productRawResponse.json();
+      return productData?.results;
+    } catch (e) {
+      return { errorMessage: 'Unable to fetch data from server.' };
     }
   }
